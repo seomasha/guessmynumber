@@ -6,21 +6,32 @@ import { StatusBar } from 'expo-status-bar';
 
 import StartGame from './screens/StartGame';
 import GameScreen from './screens/GameScreen';
+import GameOver from './screens/GameOver';
 
 import Colors from './constants/Colors';
 
 export default function App() {
 
   const [number, setNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(true);
+
+  function gameOverHandler() {
+    setGameIsOver(true);
+  }
 
   function pickedNumberHandler(pickedNumber) {
       setNumber(pickedNumber);
+      setGameIsOver(false);
   }
 
   let screen = <StartGame onPickNumber={pickedNumberHandler}/>;
 
   if(number) {
-      screen = <GameScreen />
+      screen = <GameScreen userNumber={number} onGameOver={gameOverHandler}/>
+  }
+
+  if(gameIsOver && number) {
+    screen = <GameOver />
   }
 
   return (
